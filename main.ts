@@ -5,7 +5,6 @@ import {
   } from "https://deno.land/x/oak@v10.0.0/mod.ts";
 //  import { Bson, MongoClient } from "https://deno.land/x/mongo@v0.29.3/mod.ts";
 import {
-    Bson,
     MongoClient,
   } from "https://deno.land/x/mongo@v0.31.1/mod.ts";
   import { timeAgo } from "https://deno.land/x/time_ago@v1/mod.ts";
@@ -29,7 +28,7 @@ import {
   }
   
   interface Post {
-    _id: Bson.ObjectId;
+    id: number;
     title: string;
   }
   
@@ -40,7 +39,7 @@ import {
       const posts = await collection
         .find({}, { noCursorTimeout: false })
         .sort({
-          _id: -1,
+          id: -1,
         })
         .map((post) => ({
           ...post,
@@ -64,7 +63,7 @@ import {
     if (!title) ctx.throw(Status.BadRequest, "Title is required");
   
     const post = {
-      _id: new Bson.ObjectId(),
+      id: Math.random(),
       title,
     };
   
